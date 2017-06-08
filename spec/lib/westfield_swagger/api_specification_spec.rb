@@ -14,10 +14,13 @@ RSpec.describe WestfieldSwagger::ApiSpecification do
 
   describe '#read' do
     context 'info block' do
+      time = Time.parse('2001-01-01T10:10:10Z')
+
       context 'when only a single file is used for the generated swagger' do
         it 'should return the last modified date of the single file in the swagger' do
+          FileUtils.touch('spec/dummy/lib/swagger/1.yml', mtime: time)
           swagger_doc = JSON.parse(subject.read)
-          expect(swagger_doc["info"]["x-last_modified_at"]).to eql('2015-09-15T20:39:23Z')
+          expect(swagger_doc["info"]["x-last_modified_at"]).to eql(time.utc.iso8601)
         end
 
         it 'should return the correct name value in the info block' do
@@ -30,7 +33,6 @@ RSpec.describe WestfieldSwagger::ApiSpecification do
         let(:version) { '3' }
 
         it 'should return the last modified date of the most recent file in the swagger' do
-          time = Time.parse('2001-01-01T10:10:10Z')
           Dir.glob('spec/dummy/lib/swagger/3/*.yml').each do |file|
             FileUtils.touch(file, mtime: time += 1.hour)
           end
