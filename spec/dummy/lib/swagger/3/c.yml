@@ -1,0 +1,8 @@
+# Model / Schema / Response definitions
+# -------------------------------------
+definitions:
+
+  c:
+    type: object
+    additionalProperties: false
+    description: "Empty C object."

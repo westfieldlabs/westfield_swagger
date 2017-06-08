@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Swagger UI</title>
+  <link href=<%= mounted_path('/css/typography.css') %> media='screen' rel='stylesheet' type='text/css'/>
+  <link href=<%= mounted_path('/css/reset.css') %> media='screen' rel='stylesheet' type='text/css'/>
+  <link href=<%= mounted_path('/css/screen.css') %> media='screen' rel='stylesheet' type='text/css'/>
+  <link href=<%= mounted_path('/css/reset.css') %> media='print' rel='stylesheet' type='text/css'/>
+  <link href=<%= mounted_path('/css/screen.css') %> media='print' rel='stylesheet' type='text/css'/>
+  <!-- <script src="/lib/shred.bundle.js" type="text/javascript"></script> -->
+  <script src=<%= mounted_path('/lib/jquery-1.8.0.min.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/jquery.slideto.min.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/jquery.wiggle.min.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/jquery.ba-bbq.min.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/handlebars-2.0.0.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/underscore-min.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/backbone-min.js') %> type='text/javascript'></script>
+  <!-- <script src='/lib/swagger-client.js' type='text/javascript'></script>-->
+  <script src=<%= mounted_path('/swagger-ui.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/highlight.7.3.pack.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/marked.js') %> type='text/javascript'></script>
+  <script src=<%= mounted_path('/lib/swagger-oauth.js') %> type='text/javascript'></script>
+  <script type="text/javascript">
+    $(function () {
+      var url = window.location.search.match(/url=([^&]+)/);
+      if (url && url.length > 1) {
+        url = decodeURIComponent(url[1]);
+      } else {
+        url = "<%= request.protocol %><%= @spec.swagger_api_host %>/swagger/<%= @service %><%= @spec.version %>.json";
+      }
+
+      $('#generate').click(function moveToTokenGenerator() {
+        var selector = '#default_token_post';
+        $(selector).slideto({ highlight: false })
+        Docs.expandOperation($(selector + ' .content'));
+      });
+
+      window.swaggerUi = new SwaggerUi({
+        url: url,
+        dom_id:"swagger-ui-container",
+        apiKey:"api_key",
+        apiKeyName:"api_key",
+        docExpansion:"none",
+        apisSorter:"alpha",
+        operationsSorter:"alpha",
+        defaultModelRendering:"schema",
+        showRequestHeaders:true,
+        jsonEditor:false,
+        showBasePathInOperation: true,
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+        onComplete: function(swaggerApi, swaggerUi){
+          $('pre code').each(function(i, e) {
+            hljs.highlightBlock(e)
+          });
+        },
+        onFailure: function(data) {
+          log("Unable to Load SwaggerUI");
+        }
+      });
+
+      $('#input_api_key').change(function() {
+        var key = $('#input_api_key').val();
+        var auth = undefined;
+        if (key.trim() == "") { key = " "; }
+        if (key) {
+          auth = new SwaggerClient.ApiKeyAuthorization("api_key", key, "query");
+          window.swaggerUi.api.clientAuthorizations.add("api_key", auth);
+        }
+      });
+
+      window.swaggerUi.load();
+
+      function log() {
+        if ('console' in window) {
+          console.log.apply(console, arguments);
+        }
+      }
+
+  });
+  </script>
+</head>
+<body class="swagger-section">
+  <div id='header'>
+    <div class="swagger-ui-wrap">
+      <a id="logo" href="http://swagger.io">swagger</a>
+      <form id='api_selector'>
+        <div class='input'>
+          <input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/>
+        </div>
+        <div class='input'>
+          <input placeholder="api_key" id="input_api_key" name="api_key" type="text"/>
+        </div>
+<!--
+        <div class='input'>
+          <a id="generate" href="#!/default/token_json_post">Generate Token</a>
+        </div>
+-->
+        <div class='input'>
+          <a id="explore" href="#">Explore</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+  <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+</body>
+</html>

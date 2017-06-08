@@ -1,0 +1,16 @@
+### Expected/Desired Behavior:
+< Description of the expected or desired behavior including an example >
+
+### Current Behavior:
+< Description of the current behavior being encountered including an example >
+
+### Impact:
+- Will this introduce any externally facing changes(endpoint, fields, validation, query)?
+- Was a regression introduced(if bug)?
+- Urgency(low, medium, high)?
+- Teams impacted?(web, ios, android, maps, etc)
+
+### Requirements:
+- Label as "Bug Fix", "Feature" or "Optimization"(Tech Debt)
+
+cc: @two_ @team_members

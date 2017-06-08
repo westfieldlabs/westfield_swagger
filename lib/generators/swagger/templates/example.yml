@@ -1,0 +1,104 @@
+swagger: '2.0'
+info:
+  version: "<%= WestfieldSwagger.api_version %>"
+  title: "Westfield Example Service"
+  description: "Information on API endpoints for Example Service"
+host: "your.host.path"
+tags: [ { name: "EXAMPLE" } ]
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+
+  "/examples":
+
+    get:
+      description: "List examples."
+      operationId: "examples#index"
+      tags: ["EXAMPLE"]
+      parameters:
+        - name: version
+          in: query
+          description: "API version. Version number for the API."
+          required: true
+          default: "1"
+          type: string
+      responses:
+        200:
+          description: "Successfully retrieved the list of examples."
+          schema:
+            type: object
+            required:
+              - data
+              - errors
+              - meta
+            additionalProperties: false
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/example"
+              errors:
+                type: object
+              metadata:
+                type: object
+
+  "/examples/{example_id}":
+
+    get:
+      description: "Individual example."
+      operationId: "examples#show"
+      parameters:
+        - name: example_id
+          in: path
+          type: string
+          description: "Example identifier. Request the example with example_id."
+          required: true
+        - name: version
+          in: query
+          type: string
+          description: "API version. Version number for the API."
+          default: "1"
+          required: true
+      responses:
+        200:
+          schema:
+          description: "Successfully retrieved the individual example."
+            type: object
+            properties:
+              data:
+                $ref: "#/definitions/example"
+              errors:
+                type: object
+              metadata:
+                type: object
+        404:
+          description: "Example not found."
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+              errors:
+                type: object
+              metadata:
+                type: object
+
+definitions:
+
+  example:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+        description: "Identifier. Identifier to retrieve this example."
+      name:
+        type: string
+        description: "Example name."

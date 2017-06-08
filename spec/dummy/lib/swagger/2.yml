@@ -1,0 +1,318 @@
+swagger: '2.0'
+info:
+  version: '2'
+  title: Westfield Object Service v2
+schemes:
+  - http
+  - https
+host:
+  "my-custom-hostname-goes-here.domain.com"
+consumes:
+  - application/json
+produces:
+  - application/json
+
+# Model / Schema / Response definitions
+# -------------------------------------
+definitions:
+  emptyObject:
+    description: >
+      Generic empty object. To be used when you want to guarantee the object should be empty.
+  emptyErrorResponse:
+    description: Empty error response
+
+  metaResponse:
+    description: Metadata of response
+    required:
+      - api_version
+    properties:
+      api_version:
+        description: API Version
+        type: string
+        example: '1'
+
+#
+# Object Parameters and Responses
+# -------------------------------
+
+  objectListResponse:
+    description: List of objects
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/object'
+      errors:
+        $ref: '#/definitions/emptyObject'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  objectResponse:
+    description: Information about a specific object
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/object'
+      errors:
+        $ref: '#/definitions/emptyObject'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  object:
+    description: Object
+    required:
+      - id
+      - title
+      - _links
+    properties:
+      object_id:
+        type: integer
+        description: object id
+      title:
+        type: string
+        description: Object title
+      publish_date:
+        type: string
+        format: date
+        description: Object publish date
+      available_from:
+        type: string
+        format: date
+        description: Object avaialble from
+      featured:
+        type: boolean
+        description: Featured
+      _links:
+        $ref: '#/definitions/objectLinks'
+
+  objectLinks:
+    required:
+      - image
+    properties:
+      image:
+        description: Canonical link to the object image
+        $ref: '#/definitions/link'
+
+  link:
+    description: Generic link model
+    required:
+      - href
+    properties:
+      href:
+        type: string
+
+#
+# Status Responses
+#-----------------
+
+  400Response:
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/emptyObject'
+      errors:
+        $ref: '#/definitions/400Error'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  400Error:
+    required:
+      - base
+    properties:
+      base:
+        type: array
+        items:
+          $ref: '#/definitions/400ErrorDetails'
+
+  400ErrorDetails:
+    required:
+      - message
+    properties:
+      message:
+        description: Description of error
+        type: string
+
+  406Response:
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/emptyObject'
+      errors:
+        $ref: '#/definitions/406Error'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  406Error:
+    required:
+      - base
+    properties:
+      base:
+        type: array
+        items:
+          $ref: '#/definitions/406ErrorDetails'
+
+  406ErrorDetails:
+    required:
+      - message
+      - format
+    properties:
+      message:
+        description: Description of error
+        type: string
+      format:
+        description: MIME type of request
+        type: string
+
+  404Response:
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/emptyObject'
+      errors:
+        $ref: '#/definitions/404Error'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  404Error:
+    required:
+      - base
+    properties:
+      base:
+        type: array
+        items:
+          $ref: '#/definitions/404ErrorDetails'
+
+  404ErrorDetails:
+    required:
+      - message
+      - params
+      - table_name
+    properties:
+      message:
+        description: Description of the error that occurred
+        type: string
+      params:
+        description: Parameters which were used in the request
+        type: object
+      table_name:
+        description: Name of the database table used for lookup
+        type: string
+
+  422Response:
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/emptyObject'
+      errors:
+        $ref: '#/definitions/422Error'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  422Error:
+    properties:
+      errors:
+        description: Hash of errors
+        type: array
+        items:
+          $ref: '#/definitions/422ErrorDetails'
+
+  422ErrorDetails:
+    properties:
+      key:
+        type: string
+        description: Invalid attribute name
+      value:
+        type: string
+        description: Description of error
+
+  500Response:
+    required:
+      - data
+      - errors
+      - meta
+    properties:
+      data:
+        $ref: '#/definitions/emptyObject'
+      errors:
+        $ref: '#/definitions/500Error'
+      meta:
+        $ref: '#/definitions/metaResponse'
+
+  500Error:
+    required:
+      - base
+    properties:
+      base:
+        type: array
+        items:
+          $ref: '#/definitions/500ErrorDetails'
+
+  500ErrorDetails:
+    required:
+      - message
+      - params
+      - backtrace
+    properties:
+      message:
+        description: Description of the error that occurred
+        type: string
+      params:
+        description: Parameters which were used in the request
+        type: object
+      backtrace:
+        description: Detailed backtrace
+        type: string
+
+# Request paths
+# -------------
+paths:
+  '/objects.{format}':
+    get:
+      summary: Returns all objects
+      description: Returns a list of all objects available to shoppers in Westfield Centres
+      parameters:
+        - name: version
+          in: query
+          description: Version of the API
+          type: string
+          required: true
+        - name: version_header
+          in: header
+          description: API Version
+          type: string
+        - name: all
+          in: query
+          description: Return all objects
+          type: string
+        - name: centre
+          description: Filter the list of objects by centre code
+          type: string
+          in: query
+      responses:
+        200:
+          description: List of objects
+          schema:
+            $ref: '#/definitions/objectListResponse'
+        500:
+          description: Unknown or internal error
+          schema:
+            $ref: '#/definitions/500Response'

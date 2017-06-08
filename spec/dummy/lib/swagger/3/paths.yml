@@ -1,0 +1,24 @@
+# Request paths
+# -------------
+paths:
+  "/dummy":
+    post:
+      summary: "Create a Dummy object."
+      description: "Request creation of a Dummy object."
+      tags: ["PARKING"]
+      parameters:
+        - name: dummy_data
+          in: body
+          description: "Data to create a Dummy object."
+          schema:
+            $ref: "#/definitions/dummyCreateBody"
+          required: true
+      responses:
+        201:
+          description: "Successfully created the Dummy object."
+          schema:
+            $ref: "#/definitions/dummyResponse"
+        422:
+          description: "Dummy object not created. Returns an array of error messages explaining the problems with the provided attributes."
+          schema:
+            $ref: "#/definitions/dummy422Response"

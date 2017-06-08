@@ -1,0 +1,19 @@
+### Issue:
+[JIRA-0000](http://link_to_ticket.com)
+
+### Proposed Changes:
+< Description of the proposed change and its value. If possible also include a usage example and relative links to provide additional context for the reviewer>
+
+### Impact:
+- Will this introduce any externally facing changes(endpoint, fields, validation, query)?
+- Any special deployment coordination needed(env changes, data/db migrations, etc.)?
+- Urgency(low, medium, high)?
+- Teams impacted(web, ios, android, maps, etc)?
+
+### Requirements:
+- Add Tests to cover changes
+- Update Swagger documentation if applicable
+- Update repo documentation if applicable(readme, wiki)
+- Label as "Bug Fix", "Feature" or "Optimization"(Tech Debt)
+
+cc: @two_ @team_members

@@ -1,0 +1,20 @@
+# Model / Schema / Response definitions
+# -------------------------------------
+definitions:
+
+  emptyObject:
+    type: object
+    additionalProperties: false
+    description: "Empty object."
+
+  genericLink:
+    type: object
+    description: "Link to a resource (image, service, etc.)."
+    required:
+      - href
+    additionalProperties: false
+    properties:
+      href:
+        type: string
+        description: "Link to a resource."
+        example: "https://api.westfield.io/centres/sanfrancisco"

@@ -1,0 +1,9 @@
+Description:
+    Generate an example Swagger API specification.
+
+Example:
+    rails generate swagger
+
+    This will create:
+        lib/swagger/example.yml
+        spec/requests/swagger_spec.rb

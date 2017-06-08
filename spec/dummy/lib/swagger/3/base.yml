@@ -1,0 +1,15 @@
+swagger: "2.0"
+info:
+  version: "1"
+  title: "Westfield Dummy Service"
+  description: "Dummy Information on Parking at Westfield malls."
+basePath: '/v3'
+tags: [ { name: "DUMMY" } ]
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  x-product: [ "DUMMY" ]
