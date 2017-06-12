@@ -7,7 +7,7 @@ Westfield Swagger is a mountable Rails engine which provides everything needed t
 ### Installation
 Add it to your Gemfile:
 ```ruby
-gem 'westfield_swagger', git: "git@github.com:westfield/westfield_swagger.git"
+gem 'westfield_swagger'
 ```
 
 Then bundle:
@@ -29,7 +29,7 @@ External routing for (1, 2) access the swagger in api.xxx.westfield.io or secure
 
 External routing to the service endpoint for (3, 4) accesses the swagger for the service where the gem is installed. The JavaScript executes without the service in the path, thus loading as in (2).
 
-Your specification can be fully-formatted in JSON at `lib/swagger/{version}.json` or in YAML with embedded Ruby (ERB) at `lib/swagger/{version}.yml`. This will be converted to JSON on-demand when requested.
+Your specification can be fully-formatted in JSON at `lib/swagger/{version}.json` or in YAML with embedded Ruby (ERB) at `lib/swagger/{version}.yml`. This will be converted to JSON on-demand when requested. For (1, 2) in the uat and production environments, it prefixes the swagger path version with the environment, so the filename is, for example, uat_1.json.
 
 Additionally, the swagger files can be split across files and directories and will be reconstructed on the fly.
 
