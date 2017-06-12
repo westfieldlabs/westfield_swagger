@@ -5,10 +5,10 @@ Gem::Specification.new do |spec|
   spec.name          = 'westfield_swagger'
   spec.version       = WestfieldSwagger::VERSION
   spec.authors       = ['Chris Nelson', 'George Shaw', 'Adam Cohen']
-  spec.email         = ['gshaw@westfeild.com', 'acohen@westfield.com']
+  spec.email         = ['gshaw@westfield.com', 'acohen@westfield.com']
 
-  spec.summary       = 'Integration API service with Swagger (www.swagger.io)'
-  spec.description   = 'Add required controllers & routes for generation of OpenAPI 2.0 specifications.'
+  spec.summary       = 'Integration of an API service with Swagger documentation (www.swagger.io)'
+  spec.description   = 'Adds required controllers & routes for presentation of OpenAPI 2.0 specifications.'
   spec.homepage      = 'https://github.com/westfieldlabs/westfield_swagger'
   spec.license       = 'Apache-2.0'
 
