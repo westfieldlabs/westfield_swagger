@@ -3,14 +3,16 @@ module WestfieldSwagger
     rescue_from ApiSpecification::SpecificationParseError, with: :specification_parse_error
     rescue_from ApiSpecification::SpecificationMissing, with: :specification_missing
 
+    ENV_PREFIX = %w(uat production).include?(Rails.env) ? "#{Rails.env}_" : ''
+
     def index
       if params[:service]
         # Access service swagger
-        env_prefix = ""
+        env_prefix = ''
         @service = "#{params[:service]}/"
       else
         # Access roll-up swagger
-        env_prefix = "#{Rails.env}_"
+        env_prefix = ENV_PREFIX
         @service = ""
       end
 
